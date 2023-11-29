@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Controller</title>
+    <style>
+        /*@font-face {
+            font-family: 'vcr_osd_monoregular';
+            src: url('{{ url_for('static', filename='fonts/vcr_osd_mono_1.001-webfont.woff2') }}') format('woff2'),
+                 url('{{ url_for('static', filename='fonts/vcr_osd_mono_1.001-webfont.woff') }}') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }*/
+        
+        @import url(http://fonts.googleapis.com/css?family=Space+Mono);
+
+        body {
+            font-family: 'vcr_osd_monoregular', Space Mono;
+            background-image: url('{{ url_for('static', filename='images/floor.png') }}');
+            background-repeat: repeat;
+            background-size: 10%;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-top: 30px;
+            margin-bottom: 0px;
+        }
+
+        input {
+            font-family: 'vcr_osd_monoregular', Space Mono;
+            padding: 10px;
+            font-size: 19px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border: none;
+            text-align: center;
+            width: 450px;
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            width: 80px;
+            height: 80px; 
+            margin: 10px;
+            font-family: 'vcr_osd_monoregular', Space Mono;
+            font-size: 19px;
+        }
+
+        .dialoguecontainer .display-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            width: 150px;
+            height: auto; 
+            margin: 0px;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .side-image {
+            width: 130px; 
+            height: auto; 
+            position: absolute;
+            top: 45%;
+            transform: translateY(-50%);
+            margin-left: -20px;
+            margin-right: -20px;
+        }
+
+        .side-image.left {
+            left: 0;
+        }
+
+        .side-image.right {
+            right: 0;
+        }
+
+        .tablecontainer {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 322px;
+            height: 157px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .dialoguecontainer {
+            position: relative;
+            width: 623px;
+            height: 302px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
+
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            color: black;
+            font-size: 15px; 
+            font-weight: bold; 
+            text-align: center; 
+            z-index: 1; 
+        }
+
+        .result {
+            position: absolute;
+            top: 95%;
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            font-size: 12px;
+            visibility: hidden;
+        }
+
+        .shelf {
+            width: 130px;
+            height: auto;
+            position: absolute;
+            top: 20%;
+            transform: translateY(-50%);
+            margin-left: -5px;
+            margin-right: -5px;
+            }
+
+        .shelf.left {
+            left: 0;
+        }
+
+        .shelf.right {
+            right: 0;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            top: 101%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+        }
+
+        .form-container form {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .form-container form:first-child {
+            left: 0;
+        }
+
+        .form-container form:last-child {
+            left: 15px;
+            transform: translateY(-50%);
+        }
+
+        .form-container button {
+            width: 180px;
+            height: 44.88px;
+            background-size: cover;
+            border-radius: 5px;
+            margin-top: 0px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/process" method="post">
+        <div>
+            <img class="shelf left" src="{{ url_for('static', filename='images/shelf.png') }}" alt="Left Shelf">
+            <img src="{{ url_for('static', filename='images/professor.png') }}" alt="Left Image" height="200px" width="auto">
+            <img class="shelf right" src="{{ url_for('static', filename='images/shelf.png') }}" alt="Right Shelf">
+        </div>
+
+        <div>
+            <img class="side-image left" src="{{ url_for('static', filename='images/plant.png') }}" alt="left plant">
+            <div class="tablecontainer">
+                <img class="background-image" src="{{ url_for('static', filename='images/table.png') }}" alt="table">
+                <button type="submit" name="pattern" value="Pattern 1">
+                    <img src="{{ url_for('static', filename='images/pokeball.png') }}" alt="pattern 1" height="80px" width="80px"/>
+                </button>
+                <button type="submit" name="pattern" value="Pattern 2">
+                    <img src="{{ url_for('static', filename='images/pokeball.png') }}" alt="pattern 2" height="80px" width="80px"/>
+                </button>
+                <button type="submit" name="pattern" value="Pattern 3">
+                    <img src="{{ url_for('static', filename='images/pokeball.png') }}" alt="pattern 3" height="80px" width="80px"/>
+                </button>
+            </div>
+            <img class="side-image right" src="{{ url_for('static', filename='images/plant.png') }}" alt="right plant">
+        </div>
+
+        <div class="dialoguecontainer">
+            <img class="background-image" src="{{ url_for('static', filename='images/dialoguebox.png') }}" alt="dialogue box">
+            <div class="text-overlay">
+                <input type="text" name="this_input" value="" placeholder="Enter Text">
+                <button class="display-button" type="submit" name="pattern" value="Pattern 0">
+                    <img src="{{ url_for('static', filename='images/DisplayPattern.png') }}" alt="display" height="auto" width="150px"/>
+                </button>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <!-- Stop button -->
+            <!-- <form action="/Stop" method="post" style="position: relative;">
+                <button type="submit">Stop Matrix</button>
+            </form> -->
+
+            <!-- Shutdown button -->
+            <form action ="/Stop">
+            </form>
+            <form action="/Halt" method="post" style="position: relative;">
+                <img class="background-image" src="{{ url_for('static', filename='images/buttonbg.png') }}" alt="button bg">
+                <button type="submit">Halt Pi</button>
+            </form>
+        </div>
+    </form>
+
+    <div class="result">
+        {% if result %}
+        <p>{{ result }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
